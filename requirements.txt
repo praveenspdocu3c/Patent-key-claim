@@ -1,0 +1,5 @@
+openai
+azure-ai-formrecognizer
+azure-core
+python-docx
+streamlit
