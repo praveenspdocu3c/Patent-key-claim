@@ -76,12 +76,12 @@ def check_for_conflicts(action_document_text):
 
 # Function to compare Claim 1 against other documents
 # Function to compare Claim 1 and Original Document against other documents
-def compare_claims(claim1_text, original_document_text, other_docs_texts):
+
+def compare_claims(claim1_text, original_text, other_docs_texts):
     results = {}
     
     for doc_name, doc_text in other_docs_texts.items():
-        # Compare Claim 1 with the document
-        messages_claim1 = [
+        messages = [
             {
                 "role": "system",
                 "content": """You are an expert patent attorney, analyzing patent claims based on Claim Rejections sections 102 and 103 of the US Patent Act.
@@ -89,39 +89,24 @@ def compare_claims(claim1_text, original_document_text, other_docs_texts):
             },
             {
                 "role": "user",
-                "content": f"Determine if the examiner is correct in asserting that Claim 1 is anticipated by the cited reference. \n\nClaim 1: {claim1_text} \n\nCited Reference: {doc_text}",
+                "content": f"""
+                Compare Claim 1 with the original document and the cited reference. 
+                \n\nClaim 1: {claim1_text}
+                \n\nOriginal Document: {original_text}
+                \n\nCited Reference: {doc_text}
+                """,
             },
         ]
 
-        response_claim1 = client.chat.completions.create(
-            model="GPT4", messages=messages_claim1, temperature=0
-        )
-
-        # Compare Original Document with the document
-        messages_original = [
-            {
-                "role": "system",
-                "content": """You are an expert patent attorney, analyzing patent claims based on Claim Rejections sections 102 and 103 of the US Patent Act.
-                              Determine if the examiner is correct in asserting that the original application document is anticipated by the cited reference.""",
-            },
-            {
-                "role": "user",
-                "content": f"Determine if the examiner is correct in asserting that the original application document is anticipated by the cited reference. \n\nOriginal Document: {original_document_text} \n\nCited Reference: {doc_text}",
-            },
-        ]
-
-        response_original = client.chat.completions.create(
-            model="GPT4", messages=messages_original, temperature=0
+        response = client.chat.completions.create(
+            model="GPT4", messages=messages, temperature=0
         )
         
-        # Store both results under the same document name
-        results[doc_name] = {
-            "Claim 1 Comparison": response_claim1.choices[0].message.content,
-            "Original Document Comparison": response_original.choices[0].message.content,
-        }
-
+        # Capture the entire response
+        full_output = response.choices[0].message.content
+        results[doc_name] = full_output
+    
     return results
-
 
 # Function to generate Word document with results
 def generate_word_doc(comparison_results):
@@ -129,7 +114,9 @@ def generate_word_doc(comparison_results):
     doc.add_heading("Patent Comparison Results", 0)
     
     for doc_name, result in comparison_results.items():
+        # Add document name and results
         doc.add_heading(f"Analysis for {doc_name}", level=1)
+        # Ensure that all content from result is written to the document
         doc.add_paragraph(result)
     
     doc_filename = "comparison_results.docx"
@@ -200,10 +187,15 @@ if st.session_state.conflict_detected:
         doc_filename = generate_word_doc(comparison_results)
 
         # Display the comparison results
-        for doc_name, results in comparison_results.items():
+        # for doc_name, results in comparison_results.items():
+        #     st.subheader(f"Analysis with {doc_name}")
+        #     st.write(f"**Claim 1 Comparison**: {results['Claim 1 Comparison']}")
+        #     st.write(f"**Original Document Comparison**: {results['Original Document Comparison']}")
+            
+        for doc_name, result in comparison_results.items():
             st.subheader(f"Analysis with {doc_name}")
-            st.write(f"**Claim 1 Comparison**: {results['Claim 1 Comparison']}")
-            st.write(f"**Original Document Comparison**: {results['Original Document Comparison']}")
+            st.write(result)
+
 
         # Provide download link for Word document
         with open(doc_filename, "rb") as f:
