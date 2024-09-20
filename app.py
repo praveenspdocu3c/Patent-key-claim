@@ -164,13 +164,13 @@ if st.session_state.conflict_detected:
     st.sidebar.title("Upload Documents for Comparison")
     
     # Upload Original Document
-    original_document = st.sidebar.file_uploader("Upload Application as Filed Document PDF", type=["pdf"], key="original")
+    original_document = st.sidebar.file_uploader("Upload the Application as Filed Document", type=["pdf"], key="original")
 
     if original_document is not None:
         st.session_state.original_document_pdf = original_document
     
     # Upload Other Documents (Batch Mode)
-    other_documents = st.sidebar.file_uploader("Upload Claim rejection analysis Documents PDF (Batch Mode)", type=["pdf"], key="batch", accept_multiple_files=True)
+    other_documents = st.sidebar.file_uploader("Claim Rejection Analysis Patent Documents", type=["pdf"], key="batch", accept_multiple_files=True)
 
     if other_documents:
         st.session_state.other_documents_pdfs = other_documents
