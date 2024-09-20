@@ -108,16 +108,30 @@ def compare_claims(claim1_text, original_text, other_docs_texts):
     
     return results
 
-# Function to generate Word document with results
+from docx import Document
+
+# Function to generate Word document with results, converting **text** into bold
 def generate_word_doc(comparison_results):
     doc = Document()
     doc.add_heading("Patent Comparison Results", 0)
     
     for doc_name, result in comparison_results.items():
-        # Add document name and results
-        doc.add_heading(f"Analysis for {doc_name}", level=1)
-        # Ensure that all content from result is written to the document
-        doc.add_paragraph(result)
+        # Add document name in bold instead of using a heading
+        p = doc.add_paragraph()
+        p.add_run(f"Analysis for {doc_name}").bold = True
+        
+        # Process the result content and convert **text** into bold text
+        lines = result.split("\n")
+        for line in lines:
+            p = doc.add_paragraph()  # Create a new paragraph for each line
+            words = line.split("**")
+            for i, word in enumerate(words):
+                if i % 2 == 0:
+                    # Add normal text
+                    p.add_run(word)
+                else:
+                    # Add bold text
+                    p.add_run(word).bold = True
     
     doc_filename = "comparison_results.docx"
     doc.save(doc_filename)
