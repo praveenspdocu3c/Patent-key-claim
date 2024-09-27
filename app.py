@@ -7,8 +7,8 @@ import os
 
 # Azure OpenAI setup
 client = AzureOpenAI(
-    azure_endpoint="https://danielingitaraj.openai.azure.com/",
-    api_key="a5c4e09a50dd4e13a69e7ef19d07b48c",
+    azure_endpoint="https://theswedes.openai.azure.com/",
+    api_key="783973291a7c4a74a1120133309860c0",
     api_version="2024-02-01",
 )
 
@@ -34,25 +34,26 @@ def extract_text_from_pdf(uploaded_pdf):
     
     return text
 
-# Function to check for conflicts in the action document
 def check_for_conflicts(action_document_text):
     prompt = f"""
-    Analyze the following action document text and check for conflicts under Section 102 and 103:
-    
+    Analyze the following action document text and check for conflicts under U.S.C. 102 and 103:
+
     {action_document_text}
-    
-    Specifically, identify if Claim 1 is being anticipated by any referenced documents in the sections mentioned. 
-    If there are conflicts, return the main claim and the names of the conflicting documents.
+
+    Step 1: Extract the Key Claim(Independent Claims) ((Extract with the entire technical content)) and consider it as 'Key_claims'.
+    Step 2: Extract the Root Claim(Independent Claims) presented in the 'Key_claims' and map them accordingly. (Note: Please note method claims and system claims are not consider as independent Claims)
+    Step 3: Extract all referenced documents under U.S.C. 102 and 103 mentioned in the action document based on "Root Claim(Independent Claims)" is presented.
+    Step 4: For each referenced document, create a variable that stores the document name.
+    Step 5: If any Root Claim(Independent Claims) is being anticipated by the referenced documents, extract the entire technical content with its specified paragraph location and image reference. Then, map the claim with the conflicting document name.
+    Return the Root Claim(Independent Claims) and their mapping to conflicting documents.
     """
 
     messages = [
         {
             "role": "system",
             "content": """  
-            You are an expert in patent attorney.
-            Analyze the following action document text and check for conflicts under Section 102 and 103:    
-            Specifically, identify if Claim 1 (Root Claim) is being anticipated by any referenced documents in the sections mentioned. 
-            If there are conflicts, return the main claim and the names of the conflicting documents.
+            You are a patent attorney.
+            Analyze the following action document text and check for conflicts under Section 102 and 103. Follow the steps to extract referenced documents and their associated Key Claims, then map them to conflicting documents.
             """,
         },
         {
@@ -62,10 +63,14 @@ def check_for_conflicts(action_document_text):
     ]
 
     response = client.chat.completions.create(
-        model="GPT4", messages=messages, temperature=0
+        model="GPT-4-Omni", messages=messages, temperature=0.6
     )
 
     output = response.choices[0].message.content
+    print("_________________________________________________________________________________________________________")
+    print(output)
+    print("_________________________________________________________________________________________________________")
+
 
     if "anticipated by" in output:
         claim = "Claim 1"
@@ -77,7 +82,7 @@ def check_for_conflicts(action_document_text):
 # Function to compare Claim 1 against other documents
 # Function to compare Claim 1 and Original Document against other documents
 
-def compare_claims(claim1_text, original_text, other_docs_texts):
+def compare_claims(claim1_text, other_docs_texts):
     results = {}
     
     for doc_name, doc_text in other_docs_texts.items():
@@ -90,16 +95,15 @@ def compare_claims(claim1_text, original_text, other_docs_texts):
             {
                 "role": "user",
                 "content": f"""
-                Compare Claim 1 with the original document and the cited reference. 
+                Compare Claim 1 with the cited reference. 
                 \n\nClaim 1: {claim1_text}
-                \n\nOriginal Document: {original_text}
                 \n\nCited Reference: {doc_text}
                 """,
             },
         ]
 
         response = client.chat.completions.create(
-            model="GPT4", messages=messages, temperature=0
+            model="GPT-4-Omni", messages=messages, temperature=0 
         )
         
         # Capture the entire response
@@ -171,7 +175,7 @@ if uploaded_action_document is not None and st.sidebar.button("Analyze Action Do
         st.session_state.conflict_docs = conflict_docs
         st.success(f"Key Claim detected for {uploaded_action_document.name}. Claim rejection documents: {', '.join(conflict_docs)}")
     else:
-        st.error(f"No Key Claim detected for {uploaded_action_document.name}")
+        st.error(f"Please try again, No Key Claim detected for {uploaded_action_document.name}")
 
 # After detecting conflict, ask for the original and conflicting documents
 if st.session_state.conflict_detected:
@@ -195,7 +199,7 @@ if st.session_state.conflict_detected:
         other_docs_texts = {f"Claim rejection analysis {i+1}. {doc.name}": extract_text_from_pdf(doc) for i, doc in enumerate(st.session_state.other_documents_pdfs)}
 
         # Compare Claim 1 and Original Document against the other documents
-        comparison_results = compare_claims(st.session_state.claim_text, original_text, other_docs_texts)
+        comparison_results = compare_claims(st.session_state.claim_text, other_docs_texts)
 
         # Generate the Word document with the comparison results
         doc_filename = generate_word_doc(comparison_results)
