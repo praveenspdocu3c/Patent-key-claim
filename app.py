@@ -17,7 +17,7 @@ footer:after {
 	display: block;
 	position: relative;
 	#background-color: red;
-	padding: 5px;
+	#padding: 5px;
 	top: 2px;
 }
 # hide_streamlit_style = """
