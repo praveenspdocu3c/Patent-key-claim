@@ -6,27 +6,28 @@ from docx import Document
 import os
 
 
-footer {
+# footer {
 	
-	visibility: hidden;
+# 	visibility: hidden;
 	
-	}
-footer:after {
-	content:'goodbye'; 
-	visibility: visible;
-	display: block;
-	position: relative;
-	#background-color: red;
-	#padding: 5px;
-	top: 2px;
-}
-# hide_streamlit_style = """
-#             <style>
-#             #MainMenu {visibility: hidden;}
-#             footer {visibility: hidden;}
-#             </style>
-#             """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+# 	}
+# footer:after {
+# 	content:'goodbye'; 
+# 	visibility: visible;
+# 	display: block;
+# 	position: relative;
+# 	#background-color: red;
+# 	#padding: 5px;
+# 	top: 2px;
+# }
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 # Azure OpenAI setup
 client = AzureOpenAI(
