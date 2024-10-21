@@ -20,7 +20,6 @@ footer:after {
 	padding: 5px;
 	top: 2px;
 }
-
 # hide_streamlit_style = """
 #             <style>
 #             #MainMenu {visibility: hidden;}
