@@ -22,7 +22,7 @@ import os
 # }
 
 
-footer="
+footer="""
 
 <style> your css code put here</style>
 
@@ -32,7 +32,7 @@ footer="
 
 href='https://www.streamlit.io' target='_blank'>your email address put here</a></p>
 
-</div>"
+</div>"""
 
 st.markdown(footer, unsafe_allow_html=True)
 # hide_streamlit_style = """
