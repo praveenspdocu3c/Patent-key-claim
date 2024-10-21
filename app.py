@@ -5,43 +5,19 @@ from azure.core.credentials import AzureKeyCredential
 from docx import Document
 import os
 
+html_string='''
+<script>
+// To break out of iframe and access the parent window
+const streamlitDoc = window.parent.document;
 
-# footer {
-	
-# 	visibility: hidden;
-	
-# 	}
-# footer:after {
-# 	content:'goodbye'; 
-# 	visibility: visible;
-# 	display: block;
-# 	position: relative;
-# 	#background-color: red;
-# 	#padding: 5px;
-# 	top: 2px;
-# }
+// Make the replacement
+document.addEventListener("DOMContentLoaded", function(event){
+        streamlitDoc.getElementsByTagName("footer")[0].innerHTML = "Provided by <a href='https://yourwebsite.com' target='_blank' class='css-z3au9t egzxvld2'>Your Link Display Text Here</a>";
+    });
+</script>
+'''
+components.html(html_string)
 
-
-footer="""
-
-<style> your css code put here</style>
-
-<div class='footer'>
-
-<p>the word you want to tell<a style='display:block;text-align:center;' 
-
-href='https://www.streamlit.io' target='_blank'>your email address put here</a></p>
-
-</div>"""
-
-st.markdown(footer, unsafe_allow_html=True)
-# hide_streamlit_style = """
-#             <style>
-#             #MainMenu {visibility: hidden;}
-#             footer {visibility: hidden;}
-#             </style>
-#             """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 # Azure OpenAI setup
 client = AzureOpenAI(
