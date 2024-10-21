@@ -1,5 +1,11 @@
+# [browser]
+# gatherUsageStats = false
+
+# [global]
+# hideStreamlitMark = true
+
+[server]
+enableCORS = false
+
 [browser]
 gatherUsageStats = false
-
-[global]
-hideStreamlitMark = true
