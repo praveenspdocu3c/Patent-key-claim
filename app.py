@@ -5,19 +5,13 @@ from azure.core.credentials import AzureKeyCredential
 from docx import Document
 import os
 
-html_string='''
-<script>
-// To break out of iframe and access the parent window
-const streamlitDoc = window.parent.document;
-
-// Make the replacement
-document.addEventListener("DOMContentLoaded", function(event){
-        streamlitDoc.getElementsByTagName("footer")[0].innerHTML = "Provided by <a href='https://yourwebsite.com' target='_blank' class='css-z3au9t egzxvld2'>Your Link Display Text Here</a>";
-    });
-</script>
-'''
-components.html(html_string)
-
+hide_streamlit_style = """
+            <style>
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Azure OpenAI setup
 client = AzureOpenAI(
