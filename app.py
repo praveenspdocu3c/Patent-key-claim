@@ -5,6 +5,16 @@ from azure.core.credentials import AzureKeyCredential
 from docx import Document
 import os
 
+
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 # Azure OpenAI setup
 client = AzureOpenAI(
     azure_endpoint="https://theswedes.openai.azure.com/",
