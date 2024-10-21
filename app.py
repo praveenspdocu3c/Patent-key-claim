@@ -13,20 +13,33 @@ import os
 #             """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-hide_streamlit_style = """
-            <style>
-            /* Hide the header toolbar */
-            [data-testid="stToolbar"] {visibility: hidden !important;}
+hide_profile_js = """
+    <script>
+    // Hides the profile icon button
+    const profileIcon = document.querySelector('iframe[title="profile"]');
+    if (profileIcon) {
+        profileIcon.style.display = 'none';
+    }
+    </script>
+    """
+
+# Inject the JS into the Streamlit app
+st.markdown(hide_profile_js, unsafe_allow_html=True)
+
+# hide_streamlit_style = """
+#             <style>
+#             /* Hide the header toolbar */
+#             [data-testid="stToolbar"] {visibility: hidden !important;}
             
-            /* Hide Streamlit's profile icon and the footer */
-            footer {visibility: hidden !important;}
-            footer:after {content:''; visibility: hidden;}
+#             /* Hide Streamlit's profile icon and the footer */
+#             footer {visibility: hidden !important;}
+#             footer:after {content:''; visibility: hidden;}
             
-            /* Attempt to hide just the profile icon */
-            [data-testid="stDecoration"] {visibility: hidden !important;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+#             /* Attempt to hide just the profile icon */
+#             [data-testid="stDecoration"] {visibility: hidden !important;}
+#             </style>
+#             """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Azure OpenAI setup
 client = AzureOpenAI(
