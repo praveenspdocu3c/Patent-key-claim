@@ -6,7 +6,6 @@ from docx import Document
 import os
 
 
-
 hide_streamlit_style = """
             <style>
             #MainMenu {visibility: hidden;}
