@@ -13,6 +13,18 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+hide_profile_style = """
+    <style>
+    /* Hide Streamlit's profile icon */
+    [data-testid="stDecoration"] {
+        display: none;
+    }
+    </style>
+    """
+
+# Inject the custom CSS
+st.markdown(hide_profile_style, unsafe_allow_html=True)
+
 # Azure OpenAI setup
 client = AzureOpenAI(
     azure_endpoint="https://theswedes.openai.azure.com/",
