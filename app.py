@@ -5,25 +5,28 @@ from azure.core.credentials import AzureKeyCredential
 from docx import Document
 import os
 
+# hide_streamlit_style = """
+#             <style>
+#             [data-testid="stToolbar"] {visibility: hidden !important;}
+#             footer {visibility: hidden !important;}
+#             </style>
+#             """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 hide_streamlit_style = """
             <style>
+            /* Hide the header toolbar */
             [data-testid="stToolbar"] {visibility: hidden !important;}
+            
+            /* Hide Streamlit's profile icon and the footer */
             footer {visibility: hidden !important;}
+            footer:after {content:''; visibility: hidden;}
+            
+            /* Attempt to hide just the profile icon */
+            [data-testid="stDecoration"] {visibility: hidden !important;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-hide_profile_style = """
-    <style>
-    /* Hide Streamlit's profile icon */
-    [data-testid="stDecoration"] {
-        display: none;
-    }
-    </style>
-    """
-
-# Inject the custom CSS
-st.markdown(hide_profile_style, unsafe_allow_html=True)
 
 # Azure OpenAI setup
 client = AzureOpenAI(
