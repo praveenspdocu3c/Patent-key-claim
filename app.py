@@ -21,6 +21,7 @@ hide_avatar_style = """
     }
     </style>
 """
+st.markdown(hide_avatar_style, unsafe_allow_html=True)
 
 # hide_profile_js = """
 #     <script>
