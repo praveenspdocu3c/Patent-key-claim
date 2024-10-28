@@ -13,18 +13,17 @@ import os
 #             """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Inject JavaScript to remove the profile container element
-hide_avatar_script = """
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const avatarContainer = document.querySelector('._profileContainer_51w34_53');
-        if (avatarContainer) {
-            avatarContainer.style.display = 'none';
-        }
-    });
-    </script>
+hide_profile_preview = """
+    <style>
+    ._profilePreview_51w34_63 {
+        display: none !important;
+    }
+    </style>
 """
-st.markdown(hide_avatar_script, unsafe_allow_html=True)
+st.markdown(hide_profile_preview, unsafe_allow_html=True)
+
+
+
 # hide_profile_js = """
 #     <script>
 #     // Hides the profile icon button
