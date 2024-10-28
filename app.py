@@ -13,6 +13,15 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# Inject CSS to hide the avatar
+hide_avatar_style = """
+    <style>
+    ._profileImage_51w34_76 {
+        display: none !important;
+    }
+    </style>
+"""
+
 # hide_profile_js = """
 #     <script>
 #     // Hides the profile icon button
