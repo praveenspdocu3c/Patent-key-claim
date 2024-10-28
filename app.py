@@ -5,13 +5,13 @@ from azure.core.credentials import AzureKeyCredential
 from docx import Document
 import os
 
-hide_streamlit_style = """
-            <style>
-            [data-testid="stToolbar"] {visibility: hidden !important;}
-            footer {visibility: hidden !important;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+# hide_streamlit_style = """
+#             <style>
+#             [data-testid="stToolbar"] {visibility: hidden !important;}
+#             footer {visibility: hidden !important;}
+#             </style>
+#             """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Inject CSS to hide the avatar
 hide_avatar_style = """
