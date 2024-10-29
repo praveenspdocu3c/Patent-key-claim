@@ -13,23 +13,20 @@ import os
 #             """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# CSS to hide the Streamlit profile avatar, badge, and other branding elements
-hide_elements = """
-    <style>
-    /* Hide Streamlit profile avatar */
-    ._profileContainer_51w34_53, ._container_51w34_1, [data-testid="appCreatorAvatar"] {
-        visibility: hidden;
-        display: none;
-    }
+import streamlit as st
 
-    /* Hide Streamlit viewer badge if present */
-    [data-testid="viewerBadge"], ._viewerBadge_nim44_23 {
-        visibility: hidden;
-        display: none;
-    }
-    </style>
+# Define custom CSS to hide the profile container
+hide_profile_container_css = """
+<style>
+._profileContainer_51w34_53 {
+    display: none;
+}
+</style>
 """
-st.markdown(hide_elements, unsafe_allow_html=True)
+
+# Inject the CSS into the Streamlit app
+st.markdown(hide_profile_container_css, unsafe_allow_html=True)
+
 # hide_profile_js = """
 #     <script>
 #     // Hides the profile icon button
