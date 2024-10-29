@@ -13,15 +13,13 @@ import os
 #             """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-hide_avatar_overlay = """
+# Completely hide the Streamlit footer
+hide_streamlit_footer = """
     <style>
-    /* Create an overlay that covers the avatar section */
-    div[data-testid="stToolbar"] {
-        visibility: hidden;
-    }
+    footer {visibility: hidden;}
     </style>
 """
-st.markdown(hide_avatar_overlay, unsafe_allow_html=True)
+st.markdown(hide_streamlit_footer, unsafe_allow_html=True)
 
 # hide_profile_js = """
 #     <script>
