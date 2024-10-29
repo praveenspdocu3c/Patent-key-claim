@@ -13,15 +13,27 @@ import os
 #             """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-hide_profile_preview = """
+hide_profile_css = """
     <style>
     ._profilePreview_51w34_63 {
         display: none !important;
     }
     </style>
 """
-st.markdown(hide_profile_preview, unsafe_allow_html=True)
+st.markdown(hide_profile_css, unsafe_allow_html=True)
 
+# JavaScript to hide the profile preview element
+hide_profile_js = """
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profilePreview = document.querySelector('._profilePreview_51w34_63');
+        if (profilePreview) {
+            profilePreview.style.display = 'none';
+        }
+    });
+    </script>
+"""
+st.markdown(hide_profile_js, unsafe_allow_html=True)
 
 
 # hide_profile_js = """
